@@ -38,7 +38,7 @@ export interface WeatherMetricsData {
 
 export function getCurrentWeather(): CurrentWeatherData {
   return {
-    temperature: 72,
+    temperature: 80,
     condition: 'partly cloudy',
     feelsLike: 75,
     high: 78,

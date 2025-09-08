@@ -25,7 +25,7 @@ export function WeatherIcon({ condition, size = 'medium' }: WeatherIconProps) {
   const iconClass = `${sizeClasses[size]} drop-shadow-lg`;
 
   const getIcon = () => {
-    switch (condition.toLowerCase()) {
+    switch (condition?.toLowerCase()) {
       case 'sunny':
       case 'clear':
         return <Sun className={`${iconClass} text-amber-400`} />;

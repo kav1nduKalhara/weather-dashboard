@@ -4,6 +4,7 @@ import { Search, MapPin, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
+import { useState } from 'react';
 
 interface WeatherHeaderProps {
   selectedLocation: string;
@@ -14,9 +15,14 @@ export function WeatherHeader({
   selectedLocation,
   onLocationChange,
 }: WeatherHeaderProps) {
+  const [searchValue, setSearchValue] = useState('');
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, this would trigger API call
+    const location = searchValue.trim();
+    if (!location) return;
+    onLocationChange(location);
+    setSearchValue('');
   };
 
   return (
@@ -36,6 +42,8 @@ export function WeatherHeader({
               <Input
                 type="text"
                 placeholder="Search location..."
+                value={searchValue}
+                onChange={e => setSearchValue(e.target.value)}
                 className="pl-10 bg-slate-700/50 border-slate-600 text-slate-100 placeholder:text-slate-400 focus:bg-slate-700 focus:border-blue-400 shadow-sm"
               />
             </div>
