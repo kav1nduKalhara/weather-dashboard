@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 
 interface WeatherIconProps {
-  condition: string;
+  condition?: string;
   size?: 'small' | 'medium' | 'large';
 }
 
