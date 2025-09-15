@@ -36,6 +36,19 @@ export interface WeatherMetricsData {
   uvIndex: number;
 }
 
+export function getCurrentWeather(): CurrentWeatherData {
+  return {
+    temperature: 72,
+    condition: 'partly cloudy',
+    feelsLike: 75,
+    high: 78,
+    low: 65,
+    humidity: 68,
+    windSpeed: '8 mph',
+    pressure: '30.15 in',
+    visibility: '10 mi',
+  };
+}
 export function getHourlyForecast(): HourlyWeatherData[] {
   const hours = [
     'Now',

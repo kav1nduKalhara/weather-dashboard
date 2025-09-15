@@ -23,7 +23,7 @@ export default function WeatherDashboard() {
           {/* Left Column - Main Weather Info */}
           <div className="xl:col-span-2 space-y-6">
             <CurrentWeather location={selectedLocation} />
-            <HourlyForecast />
+            <HourlyForecast location={selectedLocation} />
             <WeeklyForecast />
           </div>
 
