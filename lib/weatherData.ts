@@ -38,7 +38,7 @@ export interface WeatherMetricsData {
 
 export function getCurrentWeather(): CurrentWeatherData {
   return {
-    temperature: 80,
+    temperature: 72,
     condition: 'partly cloudy',
     feelsLike: 75,
     high: 78,
@@ -49,7 +49,6 @@ export function getCurrentWeather(): CurrentWeatherData {
     visibility: '10 mi',
   };
 }
-
 export function getHourlyForecast(): HourlyWeatherData[] {
   const hours = [
     'Now',

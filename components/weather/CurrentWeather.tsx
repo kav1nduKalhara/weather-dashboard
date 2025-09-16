@@ -32,6 +32,31 @@ export function CurrentWeather({ location }: CurrentWeatherProps) {
     fetchWeather();
   }, [location]);
 
+  if (loading) {
+    return (
+      <Card className="p-8 bg-slate-800/90 backdrop-blur-sm border-slate-700 text-slate-100 shadow-xl">
+        <div className="flex items-center justify-center min-h-[300px]">
+          <div className="text-center">
+            <p className="text-slate-300">
+              Loading weather data for {location}...
+            </p>
+          </div>
+        </div>
+      </Card>
+    );
+  }
+  if (error) {
+    return (
+      <Card className="p-8 bg-slate-800/90 backdrop-blur-sm border-slate-700 text-slate-100 shadow-xl">
+        <div className="flex items-center justify-center min-h-[300px]">
+          <div className="text-center">
+            Unable to fetch weather data for {location}
+          </div>
+        </div>
+      </Card>
+    );
+  }
+
   return (
     <Card className="p-8 bg-slate-800/90 backdrop-blur-sm border-slate-700 text-slate-100 shadow-xl">
       <div className="flex items-center justify-between mb-6">
@@ -65,44 +90,44 @@ export function CurrentWeather({ location }: CurrentWeatherProps) {
             <WeatherIcon condition={weather?.condition} size="large" />
             <div>
               <div className="text-6xl font-light text-slate-100">
-                {weather?.temperature}°
+                {weather?.temperature ?? '--'}°
               </div>
               <div className="text-lg text-slate-200 capitalize">
-                {weather?.condition}
+                {weather?.condition ?? 'Unknown'}
               </div>
             </div>
           </div>
 
           <div className="flex items-center gap-4 text-sm text-slate-300">
-            <span>Feels like {weather?.feelsLike}°</span>
+            <span>Feels like {weather?.feelsLike ?? '--'}°</span>
             <span>•</span>
-            <span>H: {weather?.high}°</span>
-            <span>L: {weather?.low}°</span>
+            <span>H: {weather?.high ?? '--'}°</span>
+            <span>L: {weather?.low ?? '--'}°</span>
           </div>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-slate-700/50 rounded-lg p-4 text-center shadow-sm border border-slate-600">
             <div className="text-2xl font-semibold text-blue-400">
-              {weather?.humidity}%
+              {weather?.humidity ?? '--'}%
             </div>
             <div className="text-sm text-slate-300">Humidity</div>
           </div>
           <div className="bg-slate-700/50 rounded-lg p-4 text-center shadow-sm border border-slate-600">
             <div className="text-2xl font-semibold text-emerald-400">
-              {weather?.windSpeed}
+              {weather?.windSpeed ?? '--'}
             </div>
             <div className="text-sm text-slate-300">Wind Speed</div>
           </div>
           <div className="bg-slate-700/50 rounded-lg p-4 text-center shadow-sm border border-slate-600">
             <div className="text-2xl font-semibold text-purple-400">
-              {weather?.pressure}
+              {weather?.pressure ?? '--'}
             </div>
             <div className="text-sm text-slate-300">Pressure</div>
           </div>
           <div className="bg-slate-700/50 rounded-lg p-4 text-center shadow-sm border border-slate-600">
             <div className="text-2xl font-semibold text-amber-400">
-              {weather?.visibility}
+              {weather?.visibility ?? '--'}
             </div>
             <div className="text-sm text-slate-300">Visibility</div>
           </div>
