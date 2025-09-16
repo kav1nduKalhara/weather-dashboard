@@ -29,8 +29,8 @@ export default function WeatherDashboard() {
 
           {/* Right Column - Additional Info */}
           <div className="space-y-6">
-            <WeatherMetrics />
-            <WeatherMap />
+            <WeatherMetrics location={selectedLocation} />
+            <WeatherMap location={selectedLocation} />
           </div>
         </div>
       </div>
