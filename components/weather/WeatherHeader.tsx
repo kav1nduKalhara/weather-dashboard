@@ -5,23 +5,19 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useState } from 'react';
+import { useWeatherStore } from '@/stores/weatherStore';
 
-interface WeatherHeaderProps {
-  selectedLocation: string;
-  onLocationChange: (location: string) => void;
-}
-
-export function WeatherHeader({
-  selectedLocation,
-  onLocationChange,
-}: WeatherHeaderProps) {
+export function WeatherHeader() {
   const [searchValue, setSearchValue] = useState('');
+
+  const { location: selectedLocation, setLocation } = useWeatherStore();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     const location = searchValue.trim();
     if (!location) return;
-    onLocationChange(location);
+
+    setLocation(location);
     setSearchValue('');
   };
 

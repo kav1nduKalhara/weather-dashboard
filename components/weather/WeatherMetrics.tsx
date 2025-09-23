@@ -2,11 +2,65 @@
 
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Droplets, Wind, Gauge, Sun } from 'lucide-react';
-import { getWeatherMetrics } from '@/lib/weatherData';
+import { Droplets, Wind, Gauge, Sun, Sunrise, Sunset } from 'lucide-react';
+import { getWeatherMetrics, WeatherMetricsData } from '@/lib/getWeatherMetrics';
+import { useEffect, useState } from 'react';
 
-export function WeatherMetrics() {
-  const metrics = getWeatherMetrics();
+interface WeatherMetricsProps {
+  location: string;
+}
+
+export function WeatherMetrics({ location }: WeatherMetricsProps) {
+  const [metrics, setMetrics] = useState<WeatherMetricsData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    async function fetchMetrics() {
+      try {
+        setLoading(true);
+        setError(null);
+        const data = await getWeatherMetrics(location);
+        setMetrics(data);
+      } catch (error: any) {
+        setError(error.message);
+        setMetrics(null);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchMetrics();
+  }, [location]);
+
+  if (loading) {
+    return (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">
+          Weather Details
+        </h3>
+        <Card className="p-4 bg-slate-800/90 backdrop-blur-sm border-slate-700 shadow-xl">
+          <div className="text-center py-8">
+            <p className="text-slate-300">Loading weather metrics...</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
+
+  if (error || !metrics) {
+    return (
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold text-slate-100 mb-4">
+          Weather Details
+        </h3>
+        <Card className="p-4 bg-slate-800/90 backdrop-blur-sm border-slate-700 shadow-xl">
+          <div className="text-center py-8">
+            <p className="text-slate-300">Unable to load weather metrics</p>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -67,7 +121,13 @@ export function WeatherMetrics() {
           </div>
           <div className="flex items-center gap-2">
             <div
-              className={`w-2 h-2 rounded-full ${metrics.pressureTrend === 'rising' ? 'bg-emerald-400' : 'bg-red-400'}`}
+              className={`w-2 h-2 rounded-full ${
+                metrics.pressureTrend === 'rising'
+                  ? 'bg-emerald-400'
+                  : metrics.pressureTrend === 'falling'
+                    ? 'bg-red-400'
+                    : 'bg-yellow-400'
+              }`}
             ></div>
             <span className="text-xs text-slate-400 capitalize">
               {metrics.pressureTrend}
@@ -88,12 +148,42 @@ export function WeatherMetrics() {
               {metrics.uvIndex}
             </span>
             <span
-              className={`text-xs px-2 py-1 rounded font-medium ${getUVIndexColor(metrics.uvIndex)}`}
+              className={`text-xs px-2 py-1 rounded font-medium ${getUVIndexColor(
+                metrics.uvIndex
+              )}`}
             >
               {getUVIndexLevel(metrics.uvIndex)}
             </span>
           </div>
           <Progress value={(metrics.uvIndex / 11) * 100} className="h-2" />
+        </div>
+      </Card>
+
+      {/* Sunrise & Sunset */}
+      <Card className="p-4 bg-slate-800/90 backdrop-blur-sm border-slate-700 shadow-xl">
+        <div className="flex items-center gap-3 mb-3">
+          <Sun className="h-5 w-5 text-orange-400" />
+          <span className="text-slate-100 font-medium">Sun</span>
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+          <div className="flex items-center gap-2">
+            <Sunrise className="h-4 w-4 text-amber-400" />
+            <div>
+              <p className="text-xs text-slate-400">Sunrise</p>
+              <p className="text-sm text-slate-100 font-medium">
+                {metrics.sunrise}
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2">
+            <Sunset className="h-4 w-4 text-orange-400" />
+            <div>
+              <p className="text-xs text-slate-400">Sunset</p>
+              <p className="text-sm text-slate-100 font-medium">
+                {metrics.sunset}
+              </p>
+            </div>
+          </div>
         </div>
       </Card>
     </div>
